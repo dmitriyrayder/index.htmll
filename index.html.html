@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RL Lab - Cyberpunk</title>
+    <title>Enterprise ML Platform</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@700;800;900&display=swap');
 
         * {
             margin: 0;
@@ -14,173 +14,396 @@
         }
 
         :root {
-            --bg-dark: #0a0e27;
-            --bg-card: #151933;
-            --neon-pink: #ff006e;
-            --neon-cyan: #00f5ff;
-            --neon-purple: #b026ff;
-            --neon-yellow: #ffbe0b;
-            --text-white: #e0e7ff;
-            --text-gray: #8892b0;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #1a1a24;
+            --bg-card: #252535;
+            --accent-primary: #6366f1;
+            --accent-hover: #8b5cf6;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --border: #3f3f46;
+            --glow: rgba(99, 102, 241, 0.3);
+            --status-prod: #10b981;
+            --status-beta: #f59e0b;
         }
 
         body {
-            font-family: 'Rajdhani', sans-serif;
-            background: var(--bg-dark);
-            color: var(--text-white);
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+            color: var(--text-primary);
             min-height: 100vh;
             overflow-x: hidden;
-            position: relative;
         }
 
-        /* Scanlines effect */
-        body::before {
-            content: '';
+        .language-switcher {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            background: rgba(37, 37, 53, 0.9);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 25px;
+            padding: 0.5rem;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .lang-btn.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
+            color: white;
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .background-elements {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 0, 0, 0.15),
-                rgba(0, 0, 0, 0.15) 1px,
-                transparent 1px,
-                transparent 2px
-            );
             pointer-events: none;
-            z-index: 100;
-            opacity: 0.3;
-        }
-
-        /* Animated grid */
-        .cyber-grid {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(rgba(0, 245, 255, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0, 245, 255, 0.1) 1px, transparent 1px);
-            background-size: 50px 50px;
-            animation: gridMove 20s linear infinite;
             z-index: -1;
         }
 
-        @keyframes gridMove {
-            0% {
-                transform: perspective(500px) rotateX(60deg) translateY(0);
-            }
-            100% {
-                transform: perspective(500px) rotateX(60deg) translateY(50px);
-            }
-        }
-
-        /* Neon orbs */
-        .neon-orb {
-            position: fixed;
+        .bg-circle {
+            position: absolute;
             border-radius: 50%;
-            filter: blur(60px);
-            opacity: 0.4;
-            animation: pulse 4s ease-in-out infinite;
-            z-index: -1;
+            background: radial-gradient(circle, var(--glow) 0%, transparent 70%);
+            animation: float 20s infinite ease-in-out;
         }
 
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); opacity: 0.4; }
-            50% { transform: scale(1.2); opacity: 0.6; }
-        }
-
-        .orb-1 {
+        .bg-circle:nth-child(1) {
             width: 300px;
             height: 300px;
-            background: var(--neon-pink);
             top: 10%;
             right: 10%;
             animation-delay: 0s;
         }
 
-        .orb-2 {
-            width: 250px;
-            height: 250px;
-            background: var(--neon-cyan);
-            bottom: 20%;
-            left: 15%;
-            animation-delay: 1.5s;
-        }
-
-        .orb-3 {
+        .bg-circle:nth-child(2) {
             width: 200px;
             height: 200px;
-            background: var(--neon-purple);
-            top: 50%;
-            left: 50%;
-            animation-delay: 3s;
+            bottom: 20%;
+            left: 15%;
+            animation-delay: 7s;
+        }
+
+        .bg-circle:nth-child(3) {
+            width: 150px;
+            height: 150px;
+            top: 60%;
+            right: 30%;
+            animation-delay: 14s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-20px) rotate(120deg); }
+            66% { transform: translateY(10px) rotate(240deg); }
         }
 
         .container {
             max-width: 1400px;
             margin: 0 auto;
-            padding: 4rem 2rem;
-            position: relative;
+            padding: 2rem;
         }
 
-        /* Header */
         .header {
             text-align: center;
-            margin-bottom: 5rem;
-            animation: glitchIn 0.8s ease-out;
+            margin-bottom: 4rem;
+            animation: fadeInUp 1s ease-out;
         }
 
-        @keyframes glitchIn {
-            0% {
-                opacity: 0;
-                transform: translateY(-50px);
-                filter: blur(10px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0);
-                filter: blur(0);
-            }
-        }
-
-        .glitch {
-            font-family: 'Orbitron', sans-serif;
-            font-size: clamp(3rem, 7vw, 6rem);
+        .header h1 {
+            font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 900;
-            text-transform: uppercase;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, #946E1D 0%, #C9A961 50%, #674710 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
             position: relative;
-            color: var(--text-white);
-            letter-spacing: 8px;
-            text-shadow: 
-                0 0 10px var(--neon-cyan),
-                0 0 20px var(--neon-cyan),
-                0 0 30px var(--neon-cyan),
-                0 0 40px var(--neon-pink);
+            filter: drop-shadow(0 2px 4px rgba(148, 110, 29, 0.4));
         }
 
-        .tagline {
-            font-size: 1.3rem;
-            color: var(--text-gray);
-            margin-top: 1.5rem;
-            text-transform: uppercase;
-            letter-spacing: 3px;
+        .header h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, #946E1D, #C9A961, #674710);
+            border-radius: 2px;
+            box-shadow: 0 0 20px rgba(201, 169, 97, 0.6);
         }
 
-        /* Cards */
-        .grid {
+        .header p {
+            font-size: 1.25rem;
+            font-weight: 300;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        /* СЕКЦИИ */
+        .section {
+            margin-bottom: 4rem;
+            opacity: 0;
+            animation: fadeInUp 1s ease-out forwards;
+        }
+
+        .section:nth-child(1) { animation-delay: 0.1s; }
+        .section:nth-child(2) { animation-delay: 0.2s; }
+        .section:nth-child(3) { animation-delay: 0.3s; }
+        .section:nth-child(4) { animation-delay: 0.4s; }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem 2rem;
+            background: rgba(37, 37, 53, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .section-header::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: linear-gradient(180deg, var(--section-color, var(--accent-primary)), transparent);
+        }
+
+        .section-icon {
+            font-size: 2.5rem;
+            filter: drop-shadow(0 0 10px var(--section-color, var(--accent-primary)));
+        }
+
+        .section-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--section-color, var(--accent-primary)), var(--accent-hover));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-top: 0.5rem;
+        }
+
+        /* Цветовые схемы секций по типу ML-задачи */
+        .section-predictive { --section-color: #3b82f6; }  /* Синий - прогнозирование */
+        .section-prescriptive { --section-color: #10b981; } /* Зеленый - рекомендации */
+        .section-descriptive { --section-color: #f59e0b; }  /* Оранжевый - анализ */
+        .section-monitoring { --section-color: #8b5cf6; }   /* Фиолетовый - контроль */
+
+        .grid-container {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 2.5rem;
-            animation: slideUp 1s ease-out 0.5s both;
+            grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+            gap: 2rem;
         }
 
-        @keyframes slideUp {
+        .card {
+            background: rgba(37, 37, 53, 0.8);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--section-color, var(--accent-primary)), var(--accent-hover));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-15px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5),
+                        0 0 30px var(--glow);
+            border-color: var(--section-color, var(--accent-primary));
+        }
+
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--section-color, var(--accent-primary)), var(--accent-hover));
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover .card-icon {
+            transform: scale(1.1) rotate(5deg);
+        }
+
+        .card h2 {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .card p {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            flex-grow: 1;
+        }
+
+        .card .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--section-color, var(--accent-primary)), var(--accent-hover));
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            border: none;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card .button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .card .button:hover::before {
+            left: 100%;
+        }
+
+        .card .button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        .card .button:active {
+            transform: translateY(0);
+        }
+
+        .tech-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .badge {
+            background: rgba(99, 102, 241, 0.1);
+            color: var(--accent-primary);
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+        }
+
+        .badge.status-prod {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--status-prod);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .badge.status-beta {
+            background: rgba(245, 158, 11, 0.1);
+            color: var(--status-beta);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .badge.status-dev {
+            background: rgba(161, 161, 170, 0.1);
+            color: var(--text-secondary);
+            border-color: rgba(161, 161, 170, 0.3);
+        }
+
+        .card.in-development {
+            opacity: 0.6;
+            filter: grayscale(0.3);
+        }
+
+        .card.in-development:hover {
+            opacity: 0.75;
+            transform: translateY(-5px);
+        }
+
+        .card.in-development .card-icon {
+            background: linear-gradient(135deg, #71717a, #a1a1aa);
+        }
+
+        .card.in-development .button {
+            background: linear-gradient(135deg, #52525b, #71717a);
+            cursor: not-allowed;
+            pointer-events: none;
+        }
+
+        @keyframes fadeInUp {
             from {
                 opacity: 0;
-                transform: translateY(50px);
+                transform: translateY(30px);
             }
             to {
                 opacity: 1;
@@ -188,301 +411,351 @@
             }
         }
 
-        .cyber-card {
-            background: var(--bg-card);
-            border: 2px solid transparent;
-            border-radius: 0;
-            padding: 2.5rem;
-            position: relative;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 20px 100%, 0 calc(100% - 20px));
-        }
-
-        .cyber-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(45deg, transparent, var(--neon-cyan), transparent);
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .cyber-card:hover::before {
-            opacity: 0.1;
-            animation: scan 2s infinite;
-        }
-
-        @keyframes scan {
-            0% { transform: translateX(-100%); }
-            100% { transform: translateX(100%); }
-        }
-
-        .cyber-card:hover {
-            border-color: var(--neon-cyan);
-            box-shadow: 
-                0 0 20px var(--neon-cyan),
-                inset 0 0 20px rgba(0, 245, 255, 0.1);
-            transform: translateY(-10px);
-        }
-
-        .cyber-card:nth-child(2):hover {
-            border-color: var(--neon-pink);
-            box-shadow: 
-                0 0 20px var(--neon-pink),
-                inset 0 0 20px rgba(255, 0, 110, 0.1);
-        }
-
-        .cyber-card:nth-child(3):hover {
-            border-color: var(--neon-purple);
-            box-shadow: 
-                0 0 20px var(--neon-purple),
-                inset 0 0 20px rgba(176, 38, 255, 0.1);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .icon {
-            font-size: 3rem;
-            filter: drop-shadow(0 0 10px var(--neon-cyan));
-        }
-
-        .cyber-card:nth-child(2) .icon {
-            filter: drop-shadow(0 0 10px var(--neon-pink));
-        }
-
-        .cyber-card:nth-child(3) .icon {
-            filter: drop-shadow(0 0 10px var(--neon-purple));
-        }
-
-        .card-number {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 4rem;
-            font-weight: 900;
-            color: var(--neon-cyan);
-            opacity: 0.3;
-            line-height: 1;
-        }
-
-        .cyber-card:nth-child(2) .card-number {
-            color: var(--neon-pink);
-        }
-
-        .cyber-card:nth-child(3) .card-number {
-            color: var(--neon-purple);
-        }
-
-        .cyber-card h2 {
-            font-family: 'Orbitron', sans-serif;
-            font-size: 1.6rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--text-white);
-        }
-
-        .description {
-            color: var(--text-gray);
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-            font-size: 1.05rem;
-        }
-
-        .chips {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.6rem;
-            margin-bottom: 2rem;
-        }
-
-        .chip {
-            padding: 0.4rem 1rem;
-            background: rgba(0, 245, 255, 0.1);
-            border: 1px solid var(--neon-cyan);
-            font-family: 'Orbitron', sans-serif;
-            font-size: 0.7rem;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--neon-cyan);
-        }
-
-        .cyber-card:nth-child(2) .chip {
-            background: rgba(255, 0, 110, 0.1);
-            border-color: var(--neon-pink);
-            color: var(--neon-pink);
-        }
-
-        .cyber-card:nth-child(3) .chip {
-            background: rgba(176, 38, 255, 0.1);
-            border-color: var(--neon-purple);
-            color: var(--neon-purple);
-        }
-
-        .cyber-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem 2rem;
-            background: transparent;
-            border: 2px solid var(--neon-cyan);
-            color: var(--neon-cyan);
-            text-decoration: none;
-            font-family: 'Orbitron', sans-serif;
-            font-weight: 700;
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cyber-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--neon-cyan);
-            transition: left 0.3s ease;
-            z-index: -1;
-        }
-
-        .cyber-btn:hover::before {
-            left: 0;
-        }
-
-        .cyber-btn:hover {
-            color: var(--bg-dark);
-            box-shadow: 0 0 20px var(--neon-cyan);
-        }
-
-        .cyber-card:nth-child(2) .cyber-btn {
-            border-color: var(--neon-pink);
-            color: var(--neon-pink);
-        }
-
-        .cyber-card:nth-child(2) .cyber-btn::before {
-            background: var(--neon-pink);
-        }
-
-        .cyber-card:nth-child(2) .cyber-btn:hover {
-            box-shadow: 0 0 20px var(--neon-pink);
-        }
-
-        .cyber-card:nth-child(3) .cyber-btn {
-            border-color: var(--neon-purple);
-            color: var(--neon-purple);
-        }
-
-        .cyber-card:nth-child(3) .cyber-btn::before {
-            background: var(--neon-purple);
-        }
-
-        .cyber-card:nth-child(3) .cyber-btn:hover {
-            box-shadow: 0 0 20px var(--neon-purple);
-        }
-
-        .arrow {
-            transition: transform 0.3s ease;
-        }
-
-        .cyber-btn:hover .arrow {
-            transform: translateX(5px);
-        }
-
         @media (max-width: 768px) {
-            .grid {
-                grid-template-columns: 1fr;
+            .container {
+                padding: 1rem;
             }
 
-            .glitch {
-                font-size: 2.5rem;
-                letter-spacing: 4px;
+            .grid-container {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
             }
+
+            .section-header {
+                padding: 1rem 1.5rem;
+            }
+
+            .section-icon {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.4rem;
+            }
+
+            .card {
+                padding: 2rem;
+            }
+
+            .language-switcher {
+                top: 1rem;
+                right: 1rem;
+                scale: 0.9;
+            }
+        }
+
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
         }
     </style>
 </head>
 <body>
-    <div class="cyber-grid"></div>
-    <div class="neon-orb orb-1"></div>
-    <div class="neon-orb orb-2"></div>
-    <div class="neon-orb orb-3"></div>
+    <div class="language-switcher">
+        <button class="lang-btn active" onclick="switchLanguage('en')">EN</button>
+        <button class="lang-btn" onclick="switchLanguage('ua')">UA</button>
+    </div>
+
+    <div class="background-elements">
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+        <div class="bg-circle"></div>
+    </div>
 
     <div class="container">
         <header class="header">
-            <h1 class="glitch" data-text="RL NEXUS">RL NEXUS</h1>
-            <p class="tagline">Neural Intelligence Systems</p>
+            <h1 data-en="DEVELOPER ML PLATFORM" data-ua="ML-ПЛАТФОРМА РОЗРОБНИКА">DEVELOPER ML PLATFORM</h1>
+            <p data-en="Machine Learning for Retail" data-ua="Machine Learning для рітейлу">
+                Machine Learning for Retail
+            </p>
         </header>
 
-        <main class="grid">
-            <article class="cyber-card">
-                <div class="card-header">
-                    <div class="icon">⚡</div>
-                    <div class="card-number">01</div>
+        <main>
+            <!-- СЕКЦІЯ 1: MONITORING (Контроль) - ЩО ЗАРАЗ -->
+            <section class="section section-monitoring">
+                <div class="section-header">
+                    <div class="section-icon">✅</div>
+                    <div>
+                        <h2 class="section-title" data-en="What's Now?" data-ua="Що зараз?">What's Now?</h2>
+                        <p class="section-subtitle" data-en="Real-time monitoring and control" data-ua="Контроль у реальному часі">Real-time monitoring and control</p>
+                    </div>
                 </div>
-                <h2>Q-Network Protocol</h2>
-                <p class="description">
-                    Neural value approximation with temporal difference learning. Experience buffer and target synchronization for stable convergence in discrete action spaces.
-                </p>
-                <div class="chips">
-                    <span class="chip">Deep Learning</span>
-                    <span class="chip">Off-Policy</span>
-                    <span class="chip">Atari</span>
-                </div>
-                <a href="#" class="cyber-btn">
-                    Initialize <span class="arrow">▶</span>
-                </a>
-            </article>
+                <div class="grid-container">
+                    <!-- DDMRP -->
+                    <article class="card">
+                        <div class="card-icon">📊</div>
+                        <h2 data-en="Store Inventory Compliance Control (DDMRP)" data-ua="Контроль відповідності залишків магазинів (DDMRP)">Store Inventory Compliance (DDMRP)</h2>
+                        <div class="tech-badges">
+                            <span class="badge status-prod">Production</span>
+                            <span class="badge">DDMRP</span>
+                            <span class="badge">Real-time</span>
+                        </div>
+                        <p data-en="Real-time monitoring system that tracks store-level inventory compliance against planned assortment matrices. Continuously verifies stock levels, flags deviations, and alerts on compliance issues." data-ua="Система моніторингу в реальному часі, що відстежує дотримання запасів магазинів відносно планових матриць асортименту. Безперервно перевіряє рівні запасів, позначає відхилення та попереджає про проблеми дотримання.">
+                            Real-time monitoring tracks inventory compliance and alerts on deviations from targets.
+                        </p>
+                        <a href="https://ddmrpapp.streamlit.app/" target="_blank" class="button">
+                            <span data-en="Open Dashboard →" data-ua="Відкрити панель →">Open Dashboard →</span>
+                        </a>
+                    </article>
 
-            <article class="cyber-card">
-                <div class="card-header">
-                    <div class="icon">🔥</div>
-                    <div class="card-number">02</div>
-                </div>
-                <h2>Policy Engine</h2>
-                <p class="description">
-                    Gradient-based policy optimization with trust region bounds. Adaptive step sizes and generalized advantage estimation for continuous control domains.
-                </p>
-                <div class="chips">
-                    <span class="chip">Robotics</span>
-                    <span class="chip">PPO</span>
-                    <span class="chip">Continuous</span>
-                </div>
-                <a href="#" class="cyber-btn">
-                    Initialize <span class="arrow">▶</span>
-                </a>
-            </article>
+                    <!-- DDMRP DASH Interface -->
+                    <article class="card">
+                        <div class="card-icon">📱</div>
+                        <h2 data-en="DDMRP DASH Interface" data-ua="DDMRP DASH інтерфейс">DDMRP DASH Interface</h2>
+                        <div class="tech-badges">
+                            <span class="badge status-prod">Production</span>
+                            <span class="badge">Interactive Dashboard</span>
+                            <span class="badge">Real-time UI</span>
+                        </div>
+                        <p data-en="Modern interactive dashboard interface for DDMRP system. Provides real-time visualization of inventory status, interactive charts, and actionable insights with intuitive user experience for quick decision-making." data-ua="Сучасний інтерактивний дашборд-інтерфейс для системи DDMRP. Надає візуалізацію статусу запасів у реальному часі, інтерактивні графіки та практичні висновки з інтуїтивним UX для швидкого прийняття рішень.">
+                            Modern interactive dashboard with real-time visualization and intuitive UX for quick decisions.
+                        </p>
+                        <a href="https://ddmrpapp.streamlit.app/" target="_blank" class="button">
+                            <span data-en="Launch Interface →" data-ua="Запустити інтерфейс →">Launch Interface →</span>
+                        </a>
+                    </article>
 
-            <article class="cyber-card">
-                <div class="card-header">
-                    <div class="icon">🌐</div>
-                    <div class="card-number">03</div>
+                    <!-- Plan/Fact -->
+                    <article class="card in-development">
+                        <div class="card-icon">📋</div>
+                        <h2 data-en="Plan/Fact Sales Analysis" data-ua="План/Факт Продаж">Plan/Fact Sales Analysis</h2>
+                        <div class="tech-badges">
+                            <span class="badge status-dev" data-en="In Development" data-ua="В розробці">In Development</span>
+                            <span class="badge">Variance Analysis</span>
+                            <span class="badge">KPI Tracking</span>
+                        </div>
+                        <p data-en="Real-time comparison dashboard tracking actual sales performance against planned targets. Monitors KPIs continuously, highlights deviations as they occur, and provides instant alerts for immediate corrective actions." data-ua="Панель порівняння в реальному часі, що відстежує фактичну ефективність продажів відносно планових цілей. Безперервно моніторить KPI, виділяє відхилення по мірі їх виникнення та надає миттєві попередження для негайних коригувальних дій.">
+                            Real-time dashboard tracks sales vs targets and provides instant alerts for corrective actions.
+                        </p>
+                        <a href="#" target="_blank" class="button">
+                            <span data-en="Open Dashboard →" data-ua="Відкрити панель →">Open Dashboard →</span>
+                        </a>
+                    </article>
                 </div>
-                <h2>Distributed Core</h2>
-                <p class="description">
-                    Parallel agent architecture with asynchronous updates. Multi-threaded exploration and centralized learning for accelerated training efficiency.
-                </p>
-                <div class="chips">
-                    <span class="chip">A3C</span>
-                    <span class="chip">Parallel</span>
-                    <span class="chip">Scalable</span>
+            </section>
+
+            <!-- СЕКЦІЯ 2: PREDICTIVE (Прогнозування) - ЩО БУДЕ -->
+            <section class="section section-predictive">
+                <div class="section-header">
+                    <div class="section-icon">🔮</div>
+                    <div>
+                        <h2 class="section-title" data-en="What's Next?" data-ua="Що буде?">What's Next?</h2>
+                        <p class="section-subtitle" data-en="Sales forecasts, risk predictions, customer behavior" data-ua="Прогнози продажів, ризиків, поведінки клієнтів">Sales forecasts, risk predictions, customer behavior</p>
+                    </div>
                 </div>
-                <a href="#" class="cyber-btn">
-                    Initialize <span class="arrow">▶</span>
-                </a>
-            </article>
+                <div class="grid-container">
+                    <!-- Prophet -->
+                    <article class="card">
+                        <div class="card-icon">📊</div>
+                        <h2 data-en="Revenue Forecasting & Demand Planning" data-ua="Прогнозування виручки та планування попиту">Revenue Forecasting & Demand Planning</h2>
+                        <div class="tech-badges">
+                            <span class="badge status-prod">Production</span>
+                            <span class="badge">Prophet</span>
+                            <span class="badge">Time Series</span>
+                        </div>
+                        <p data-en="Intelligent forecasting system powered by Prophet algorithm. Analyzes historical sales data, identifies seasonal patterns and market trends to generate accurate revenue predictions." data-ua="Інтелектуальна система прогнозування на основі алгоритму Prophet. Аналізує історичні дані продажів, виявляє сезонні патерни та ринкові тренди для точних прогнозів.">
+                            Intelligent forecasting system powered by Prophet algorithm. Analyzes historical sales data, identifies seasonal patterns.
+                        </p>
+                        <a href="https://dev.fielmann.co.ua/service1/" target="_blank" class="button pulse">
+                            <span data-en="Open Dashboard →" data-ua="Відкрити панель →">Open Dashboard →</span>
+                        </a>
+                    </article>
+
+                    <!-- GARCH -->
+                    <article class="card">
+                        <div class="card-icon">📉</div>
+                        <h2 data-en="Segment Performance & Volatility Analysis" data-ua="Аналіз ефективності та волатильності сегментів">Segment Performance & Volatility</h2>
+                        <div class="tech-badges">
+                            <span class="badge status-prod">Production</span>
+                            <span class="badge">GARCH</span>
+                            <span class="badge">Volatility</span>
+                        </div>
+                        <p data-en="Advanced time series analytics using GARCH models to predict market segment volatility, measure risk patterns, and forecast performance fluctuations for strategic decision-making." data-ua="Розширена аналітика часових рядів за допомогою моделей GARCH для прогнозування волатильності сегментів, вимірювання патернів ризиків та прогнозування коливань ефективності.">
+                            Advanced GARCH models predict segment volatility and measure risk patterns for strategic decisions.
+                        </p>
+                        <a href="https://garchmodel.streamlit.app/" target="_blank" class="button">
+                            <span data-en="Launch Tool →" data-ua="Запустити інструмент →">Launch Tool →</span>
+                        </a>
+                    </article>
+
+                    <!-- RFM -->
+                    <article class="card in-development">
+                        <div class="card-icon">👥</div>
+                        <h2 data-en="RFM Analysis & Customer Segmentation" data-ua="RFM-аналіз та сегментація клієнтів">RFM Analysis & Customer Segmentation</h2>
+                        <div class="tech-badges">
+                            <span class="badge status-dev" data-en="In Development" data-ua="В розробці">In Development</span>
+                            <span class="badge">RFM</span>
+                            <span class="badge">Churn Prediction</span>
+                        </div>
+                        <p data-en="Predictive customer analytics using RFM methodology. Forecasts customer lifetime value, predicts churn probability, and identifies high-value segments for targeted retention strategies." data-ua="Предиктивна аналітика клієнтів за методологією RFM. Прогнозує lifetime value, ймовірність відтоку та визначає високоцінні сегменти для стратегій утримання.">
+                            Predictive RFM analytics forecasts customer lifetime value and churn probability.
+                        </p>
+                        <a href="https://rfmanalysis.streamlit.app/" target="_blank" class="button">
+                            <span data-en="Open Analytics →" data-ua="Відкрити аналітику →">Open Analytics →</span>
+                        </a>
+                    </article>
+                </div>
+            </section>
+
+            <!-- СЕКЦІЯ 3: DESCRIPTIVE (Аналіз) - ЩО СТАЛОСЯ -->
+            <section class="section section-descriptive">
+                <div class="section-header">
+                    <div class="section-icon">📈</div>
+                    <div>
+                        <h2 class="section-title" data-en="What Happened?" data-ua="Що сталося?">What Happened?</h2>
+                        <p class="section-subtitle" data-en="Analysis, reports and performance insights" data-ua="Аналіз, звіти та інсайти ефективності">Analysis, reports and performance insights</p>
+                    </div>
+                </div>
+                <div class="grid-container">
+                    <!-- SKU Lifecycle -->
+                    <article class="card">
+                        <div class="card-icon">📦</div>
+                        <h2 data-en="SKU Lifecycle & Profitability Management" data-ua="Управління життєвим циклом та рентабельністю SKU">SKU Lifecycle & Profitability</h2>
+                        <div class="tech-badges">
+                            <span class="badge status-prod">Production</span>
+                            <span class="badge">Classification</span>
+                            <span class="badge">Lifecycle</span>
+                        </div>
+                        <p data-en="Comprehensive analytics platform that describes product lifecycle stages and profitability patterns. Classifies SKUs by performance phase (growth, maturity, decline) and analyzes margin trends." data-ua="Комплексна аналітична платформа, що описує стадії життєвого циклу продуктів та патерни прибутковості. Класифікує SKU за фазою ефективності (зростання, зрілість, спад) та аналізує тренди маржі.">
+                            Analytics platform describes product lifecycle stages and profitability patterns.
+                        </p>
+                        <a href="https://dev.fielmann.co.ua/service3/" target="_blank" class="button">
+                            <span data-en="View Analytics →" data-ua="Переглянути аналітику →">View Analytics →</span>
+                        </a>
+                    </article>
+
+                    <!-- Store Clustering -->
+                    <article class="card">
+                        <div class="card-icon">🗺️</div>
+                        <h2 data-en="ML-Powered Store Clustering & Matrix Optimization" data-ua="ML-кластеризація магазинів">ML Store Clustering</h2>
+                        <div class="tech-badges">
+                            <span class="badge status-prod">Production</span>
+                            <span class="badge">K-means</span>
+                            <span class="badge">Clustering</span>
+                        </div>
+                        <p data-en="Unsupervised ML platform that describes store similarity patterns and groups locations by performance characteristics. Reveals natural store segments for differentiated merchandising strategies." data-ua="Платформа ML без учителя, що описує патерни схожості магазинів та групує локації за характеристиками ефективності. Виявляє природні сегменти магазинів для диференційованих стратегій мерчандайзингу.">
+                            Unsupervised ML describes store similarity patterns and reveals natural segments.
+                        </p>
+                        <a href="https://whatifprice.streamlit.app/" target="_blank" class="button">
+                            <span data-en="Launch Clustering →" data-ua="Розпочати кластеризацію →">Launch Clustering →</span>
+                        </a>
+                    </article>
+
+                    <!-- Cannibalization -->
+                    <article class="card in-development">
+                        <div class="card-icon">🔄</div>
+                        <h2 data-en="Sales Cannibalization Analysis" data-ua="Аналіз канібалізації продажів">Sales Cannibalization Analysis</h2>
+                        <div class="tech-badges">
+                            <span class="badge status-dev" data-en="In Development" data-ua="В розробці">In Development</span>
+                            <span class="badge">Cross-Impact</span>
+                            <span class="badge">Correlation</span>
+                        </div>
+                        <p data-en="Statistical analysis platform that describes product competition dynamics and quantifies cannibalization effects. Reveals which products compete for the same customer demand and measures cross-impact." data-ua="Платформа статистичного аналізу, що описує динаміку конкуренції між продуктами та кількісно оцінює ефекти канібалізації. Виявляє, які продукти конкурують за той самий попит клієнтів та вимірює взаємний вплив.">
+                            Statistical platform describes product competition dynamics and measures cannibalization.
+                        </p>
+                        <a href="#" target="_blank" class="button">
+                            <span data-en="Launch Analysis →" data-ua="Запустити аналіз →">Launch Analysis →</span>
+                        </a>
+                    </article>
+                </div>
+            </section>
+
+            <!-- СЕКЦІЯ 4: PRESCRIPTIVE (Рекомендації) - ЩО РОБИТИ -->
+            <section class="section section-prescriptive">
+                <div class="section-header">
+                    <div class="section-icon">🎯</div>
+                    <div>
+                        <h2 class="section-title" data-en="What To Do?" data-ua="Що робити?">What To Do?</h2>
+                        <p class="section-subtitle" data-en="AI recommendations and optimization strategies" data-ua="Рекомендації та стратегії оптимізації">AI recommendations and optimization strategies</p>
+                    </div>
+                </div>
+                <div class="grid-container">
+                    <!-- Recommendation System -->
+                    <article class="card">
+                        <div class="card-icon">🤖</div>
+                        <h2 data-en="AI-Powered Product Recommendation System" data-ua="Рекомендаційна система на основі ШІ">AI Product Recommendation System</h2>
+                        <div class="tech-badges">
+                            <span class="badge status-prod">Production</span>
+                            <span class="badge">Collaborative Filtering</span>
+                            <span class="badge">ML</span>
+                        </div>
+                        <p data-en="Intelligent recommendation engine that prescribes optimal product assortment for each store. Analyzes network-wide sales patterns and suggests high-performing items missing from store inventory." data-ua="Інтелектуальна рекомендаційна система, що визначає оптимальний асортимент для кожного магазину. Аналізує патерни продажів у мережі та пропонує високоефективні товари, відсутні у запасах магазину.">
+                            Intelligent engine prescribes optimal product assortment for each store based on network patterns.
+                        </p>
+                        <a href="https://dev.fielmann.co.ua/service2/" target="_blank" class="button">
+                            <span data-en="Launch System →" data-ua="Запустити систему →">Launch System →</span>
+                        </a>
+                    </article>
+
+                    <!-- What-if -->
+                    <article class="card">
+                        <div class="card-icon">⚡</div>
+                        <h2 data-en="Pricing Strategy Simulation Platform" data-ua="Платформа моделювання цінової стратегії">Pricing Strategy Simulation</h2>
+                        <div class="tech-badges">
+                            <span class="badge status-beta">Testing</span>
+                            <span class="badge">What-If Analysis</span>
+                            <span class="badge">Simulation</span>
+                        </div>
+                        <p data-en="Interactive what-if scenario platform that prescribes optimal pricing strategies. Simulates multiple pricing scenarios, evaluates revenue impact, and recommends data-driven price adjustments." data-ua="Інтерактивна платформа what-if сценаріїв для визначення оптимальних цінових стратегій. Симулює множинні цінові сценарії, оцінює вплив на виручку та рекомендує корекції цін на основі даних.">
+                            Interactive platform prescribes optimal pricing through scenario simulation and impact analysis.
+                        </p>
+                        <a href="https://whatifprice.streamlit.app/" target="_blank" class="button">
+                            <span data-en="View Simulator →" data-ua="Переглянути симулятор →">View Simulator →</span>
+                        </a>
+                    </article>
+
+                    <!-- KU Optimization -->
+                    <article class="card in-development">
+                        <div class="card-icon">🎮</div>
+                        <h2 data-en="KU Optimization System (Reinforcement Learning)" data-ua="Система оптимізації KU (Reinforcement Learning)">KU Optimization System (RL)</h2>
+                        <div class="tech-badges">
+                            <span class="badge status-dev" data-en="In Development" data-ua="В розробці">In Development</span>
+                            <span class="badge">Reinforcement Learning</span>
+                            <span class="badge">PPO</span>
+                        </div>
+                        <p data-en="Advanced RL system that prescribes optimal key unit strategies through continuous learning. Agent learns from environment feedback to recommend actions maximizing long-term business KPIs." data-ua="Розширена RL-система, що визначає оптимальні стратегії ключових юнітів через безперервне навчання. Агент навчається на основі зворотного зв'язку від середовища для рекомендацій дій, що максимізують довгострокові бізнес-KPI.">
+                            Advanced RL system prescribes optimal strategies through continuous learning and feedback.
+                        </p>
+                        <a href="#" target="_blank" class="button">
+                            <span data-en="Launch System →" data-ua="Запустити систему →">Launch System →</span>
+                        </a>
+                    </article>
+                </div>
+            </section>
+
         </main>
     </div>
+
+    <script>
+        let currentLanguage = 'en';
+
+        function switchLanguage(lang) {
+            currentLanguage = lang;
+            document.documentElement.lang = lang;
+
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[onclick="switchLanguage('${lang}')"]`).classList.add('active');
+
+            document.querySelectorAll('[data-en]').forEach(element => {
+                const text = element.getAttribute(`data-${lang}`);
+                if (text) {
+                    element.textContent = text;
+                }
+            });
+
+            document.title = lang === 'en' ? 'Enterprise ML Platform' : 'Корпоративна ML-платформа';
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            switchLanguage('en');
+        });
+    </script>
 </body>
 </html>
